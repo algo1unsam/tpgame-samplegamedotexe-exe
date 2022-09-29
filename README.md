@@ -2,8 +2,8 @@
 
 ## Equipo de desarrollo
 
-Lucas Antenni
-Gaston Abelardo
+- Lucas Antenni
+- Gaston Abelardo
 
 ## Capturas
 
