@@ -4,6 +4,7 @@
 
 - Lucas Antenni
 - Gaston Abelardo
+- Facundo Diaz
 
 ## Capturas
 
