@@ -10,65 +10,173 @@ import wollok.game.*
  * *****S******
 
  */
-object bloque {
+/**/
+
+class Block{
+	var property position
+}
+
+class Pipe inherits Block{
+	var property image
+	//var property dir
+}
+
+object selector {
 
 	var property position = game.center() // necesito definir el property para tener el getter
-	var property image = "guyN.png"
-	const property brujula = [ true, false, false, false ] // [N,E,S,W]
+	var property previousPosition
+	var property image = "guy_N.png"
 
-//	method rotateRight(){
-//		/*
-//		 * lo que explico el profe para hacer esto es que pueda hacer un shifteo en binario
-//		 * lo mejor que puedo hacer es desarrollaro un algoritmo que cambie la posicion de la lista
-//		 * 
-//		*/
-//		
-//		//shifteo la brujula -> [false, true, false, false]
-//		//update del image
-//		self.shiftRight()
-//		self.image("guyE.png")
-//		
-//		
+	method selectorRotacion(dir) {
+		self.image("guy_" + dir + ".png")
+	// (object + direction + type)
+	}
+//
+//	method movimientoUp(){
+//		self.updatePreviousPosition()
+//		position = position.up(1)
 //	}
-	method rotateLeft() {
+//	
+//	method movimientoDown(){
+//		self.updatePreviousPosition()
+//		position = position.down(1)
+//	}
+//	
+//	method movimientoLeft(){
+//		self.updatePreviousPosition()
+//		position = position.left(1)
+//	}
+//	
+//	method movimientoRight(){
+//		self.updatePreviousPosition()
+//		position = position.right(1)
+//	}
+	
+	
+	method updatePreviousPosition() {
+		previousPosition = position.clone()
+	}
+	
+	method vuelvoAtras(conQuienChoco) {
+		position = previousPosition
 	}
 
-	method shiftLeft() {
-		
-	}
-
-//	method shiftRight(){
-//		const aux = []
-//		if (brujula.last())
-//			brujula.reverse()
-//		else
-//			aux.add(brujula.subList(0,2))
-//			brujula.clear()
-//			brujula.add(false)
-//			brujula.add(aux)
-//			
-//	}
 }
+
+//object pipeInicio {
+//
+//	var property position = game.at(0, 0) // necesito definir el property para tener el getter
+//	var property image = "inicio_N.png"
+//
+//}
+//
+//object pipeFin {
+//
+//	var property position = game.at(4, 4) // necesito definir el property para tener el getter
+//	var property image = "fin_N.png"
+//
+//}
 
 object juego {
 
 	method iniciar() {
 		game.title("Juego Base")
-		game.width(5)
-		game.height(5)
+		game.width(15)
+		game.height(10)
 		game.cellSize(50)
-		game.addVisualCharacter(bloque)
+		self.creaPersonajes()
+		game.boardGround("background_beta (2).png")
 		game.start()
-		self.consultaBloqueRotacion()
+		game.whenCollideDo(selector, {
+			conQuienChoco => selector.vuelvoAtras(conQuienChoco)
+			game.say(selector, "La puta madre")
+		})
+		self.consultaMovimiento()
+		self.consultaSelectorRotacion()
 	}
 
-	method consultaBloqueRotacion() {
+	method consultaSelectorRotacion() {
 		// we ask the block rotate
 		// esto lo tiene que hacer el objeto, y no el juego
 		// el juego corrobora que esten las condiciones para abrir, cerrar, inicio, fin
 		// nivel completado, nivel finalizado
-		keyboard.q().onPressDo{ bloque.image("guyW.png")} // shift left
-		keyboard.e().onPressDo{ bloque.image("guyE.png")} // shift rigt		
+		keyboard.w().onPressDo{ selector.selectorRotacion("N")} // North (N)
+		keyboard.s().onPressDo{ selector.selectorRotacion("S")} // shift rigt
+		keyboard.a().onPressDo{ selector.selectorRotacion("W")} // shift rigt
+		keyboard.d().onPressDo{ selector.selectorRotacion("E")} // shift rigt		
+	}
+
+	method consultaMovimiento() {
+		keyboard.up().onPressDo{ selector.updatePreviousPosition()}
+		keyboard.down().onPressDo{ selector.updatePreviousPosition()}
+		keyboard.left().onPressDo{ selector.updatePreviousPosition()}
+		keyboard.right().onPressDo{ selector.updatePreviousPosition()}
+	}
+
+	method creaPersonajes() {
+		const pipeInicio = new Pipe(position = game.at(4,3), image = "inicio_N.png")
+		const pipeFin = new Pipe(position = game.at(8,7), image = "fin_N.png")
+		const barrier = self.setBarrier()
+		
+			
+		barrier.forEach({blockBarrier => game.addVisual(blockBarrier)})
+		game.addVisualCharacter(selector)
+		game.addVisual(pipeInicio)
+		game.addVisual(pipeFin)
+	}
+	method setBarrier() {
+		const barrier = []
+		
+		const barrier3x7 = new Block(position = game.at(3,7))
+		const barrier3x6 = new Block(position = game.at(3,6))
+		const barrier3x5 = new Block(position = game.at(3,5))
+		const barrier3x4 = new Block(position = game.at(3,4))
+		const barrier3x3 = new Block(position = game.at(3,3))
+		
+		const barrier8x2 = new Block(position = game.at(8,2))
+		const barrier7x2 = new Block(position = game.at(7,2))
+		const barrier6x2 = new Block(position = game.at(6,2))
+		const barrier5x2 = new Block(position = game.at(5,2))
+		const barrier4x2 = new Block(position = game.at(4,2))
+		
+		const barrier8x8 = new Block(position = game.at(8,8))
+		const barrier7x8 = new Block(position = game.at(7,8))
+		const barrier6x8 = new Block(position = game.at(6,8))
+		const barrier5x8 = new Block(position = game.at(5,8))
+		const barrier4x8 = new Block(position = game.at(4,8))
+		
+		const barrier9x7 = new Block(position = game.at(9,7))
+		const barrier9x6 = new Block(position = game.at(9,6))
+		const barrier9x5 = new Block(position = game.at(9,5))
+		const barrier9x4 = new Block(position = game.at(9,4))
+		const barrier9x3 = new Block(position = game.at(9,3)) 
+		
+		return barrier + [
+			barrier3x7,
+			barrier3x6,
+			barrier3x5,
+			barrier3x4,
+			barrier3x3,
+			
+			barrier8x2,
+			barrier7x2,
+			barrier6x2,
+			barrier5x2,
+			barrier4x2,	
+			
+			barrier8x8,
+			barrier7x8,
+			barrier6x8,
+			barrier5x8,
+			barrier4x8,
+			
+			barrier9x7,
+			barrier9x6,
+			barrier9x5,
+			barrier9x4,
+			barrier9x3				
+							]
+		
 	}
 
 }
