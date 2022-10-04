@@ -2,9 +2,9 @@
 
 ## Equipo de desarrollo
 
-- Alguien
-- Persona
-- etc.
+- Lucas Antenni
+- Gaston Abelardo
+- Facundo Diaz
 
 ## Capturas
 

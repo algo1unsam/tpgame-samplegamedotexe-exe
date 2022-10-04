@@ -3,6 +3,9 @@ import pepita.*
 
 program juego {
 	game.title("Juego Base")
-	game.addVisual(pepita)
-	game.start()
+ 	game.width(5)
+  	game.height(5)
+  	game.cellSize(50)
+	game.addVisual(bloque)
+  	game.start()
 }
