@@ -6,6 +6,6 @@ program juego {
  	game.width(5)
   	game.height(5)
   	game.cellSize(50)
-	game.addVisual(bloque)
+	game.addVisual(selector)
   	game.start()
 }
