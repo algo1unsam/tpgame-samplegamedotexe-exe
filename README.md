@@ -1,4 +1,4 @@
-# Nombre del juego (<- borrar y completar)
+# JuegoDeTuberias_Alpha0.4
 
 ## Equipo de desarrollo
 
