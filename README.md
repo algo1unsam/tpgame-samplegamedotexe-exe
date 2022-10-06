@@ -1,4 +1,4 @@
-# Nombre del juego (<- borrar y completar)
+# JuegoDeTuberias_Alpha0.4
 
 ## Equipo de desarrollo
 
@@ -8,7 +8,7 @@
 
 ## Capturas
 
-(agregar)
+![imagen de ejemplo de la alpha](example_alpha_0.4.png)
 
 ## Reglas de Juego / Instrucciones
 
