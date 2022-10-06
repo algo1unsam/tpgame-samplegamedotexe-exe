@@ -157,11 +157,21 @@ object juego {
 		keyboard.space().onPressDo{self.colocarPipe()}
 	}
 	
+	method consultaQuitarPipe(newPipe) {
+		keyboard.j().onPressDo{self.quitarPipe(newPipe)}
+	}
+	
 	method colocarPipe() {
-		const newPipe = new Pipe(position = selector.position().clone(), image = "default.png")
+		const newPipe = new Pipe(position = selector.position().clone(), image = "pipe.png")
 		self.consultaCentrarSelector()
 		game.addVisual(newPipe)
 	}
+	
+	method quitarPipe(newPipe) {
+		game.removeVisual(newPipe)
+	}
+	
+	
 	method consultaCentrarSelector() {
 		selector.volverAlCentro()
 	}
