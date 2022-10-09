@@ -42,12 +42,20 @@ class CrozablePipe inherits Pipe { //se pueden atravezar
 
 object selector {
 
+	const property pipes = [ "pipeTypeI_", "pipeTypeL_", "pipeTypeT_" ]
+	var property indexPipe = 0
+	var property direction = [ "N", "E", "S", "W" ]
+	var property indexDirection = 0
 	var property position = game.center() // necesito definir el property para tener el getter
-	var property image = "guy_N.png"
+	var property image = "pipeTypeI_N.png"
 
-	method selectorRotacion(dir) {
-		self.image("guy_" + dir + ".png")
+	method selectorRotacion(pipe, dir) {
+		self.image(pipe + dir + ".png")
 	// (object + direction + type)
+	}
+
+	method updateImage() {
+		self.image(self.pipes().get(self.indexPipe()) + self.direction().get(self.indexDirection())+".png")
 	}
 
 	method movimientoUp() {
@@ -102,7 +110,7 @@ object juego {
 		game.width(15)
 		game.height(10)
 		game.cellSize(50)
-		game.boardGround("background_beta.png")
+		game.boardGround("background_beta(01).png")
 		game.start()
 		self.creaPersonajes()
 		self.setKeys()
@@ -147,10 +155,10 @@ object juego {
 	}
 
 	method setKeys() {
-		keyboard.w().onPressDo{ selector.selectorRotacion("N")} // North (N)
-		keyboard.s().onPressDo{ selector.selectorRotacion("S")} // shift rigt
-		keyboard.a().onPressDo{ selector.selectorRotacion("W")} // shift rigt
-		keyboard.d().onPressDo{ selector.selectorRotacion("E")} // shift rigt		
+		keyboard.w().onPressDo{ selector.selectorRotacion(self.selectorPipe(), self.selectorDirection(0))} // North (N)
+		keyboard.s().onPressDo{ selector.selectorRotacion(self.selectorPipe(), self.selectorDirection(1))} // East (E)
+		keyboard.a().onPressDo{ selector.selectorRotacion(self.selectorPipe(), self.selectorDirection(2))} // South (S)
+		keyboard.d().onPressDo{ selector.selectorRotacion(self.selectorPipe(), self.selectorDirection(3))} // West (W)		
 		keyboard.up().onPressDo{ selector.movimientoUp()}
 		keyboard.down().onPressDo{ selector.movimientoDown()}
 		keyboard.left().onPressDo{ selector.movimientoLeft()}
@@ -158,16 +166,18 @@ object juego {
 		keyboard.space().onPressDo{ self.colocarPipe()}
 		keyboard.z().onPressDo{ self.deleteLastPipe()}
 		keyboard.backspace().onPressDo{ self.deleteOverPipe()}
+		keyboard.q().onPressDo{ self.switchPipeQ()}
+		keyboard.e().onPressDo{ self.switchPipeE()}
 	}
 
 	method colocarPipe() {
-		const newPipe = new CrozablePipe(position = selector.position().clone(), image = "pipe.png")
+		const newPipe = new CrozablePipe(position = selector.position().clone(), image = selector.image())
 		activePipes.add(newPipe)
 		game.addVisual(newPipe)
 	}
 
 	method deleteLastPipe() {
-		if(not self.isActivePipesEmpty()){	
+		if (not self.isActivePipesEmpty()) {
 			game.removeVisual(activePipes.last())
 			activePipes.remove(activePipes.last())
 		}
@@ -183,9 +193,42 @@ object juego {
 	method underSelector() {
 		return game.colliders(selector).size() == 0
 	}
-	
-	method isActivePipesEmpty(){
+
+	method isActivePipesEmpty() {
 		return activePipes.size() == 0
+	}
+
+	method switchPipeE() {
+		if (selector.indexPipe() == 2) {
+			selector.indexPipe(0)
+			selector.updateImage()
+		} else {
+			selector.indexPipe(selector.indexPipe() + 1)
+			selector.updateImage()
+		}
+	}
+
+	method switchPipeQ() {
+		if (selector.indexPipe() == 0) {
+			selector.indexPipe(2)
+			selector.updateImage()
+		} else {
+			selector.indexPipe(selector.indexPipe() - 1)
+			selector.updateImage()
+		}
+	}
+
+	method selectorPipe() {
+		return selector.pipes().get(selector.indexPipe())
+	}
+
+	method selectorDirection() {
+		return selector.direction().get(selector.indexDirection())
+	}
+
+	method selectorDirection(dir) {
+		selector.indexDirection(dir)
+		return selector.direction().get(selector.indexDirection())
 	}
 
 }
