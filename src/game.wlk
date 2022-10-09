@@ -156,7 +156,8 @@ object juego {
 		keyboard.left().onPressDo{ selector.movimientoLeft()}
 		keyboard.right().onPressDo{ selector.movimientoRight()}
 		keyboard.space().onPressDo{ self.colocarPipe()}
-		keyboard.backspace().onPressDo{ self.deletePipe()}
+		keyboard.z().onPressDo{ self.deleteLastPipe()}
+		keyboard.backspace().onPressDo{ self.deleteOverPipe()}
 	}
 
 	method colocarPipe() {
@@ -165,11 +166,26 @@ object juego {
 		game.addVisual(newPipe)
 	}
 
-	method deletePipe() {
-		if (selector.overPipe()) {
+	method deleteLastPipe() {
+		if(not self.isActivePipesEmpty()){	
 			game.removeVisual(activePipes.last())
 			activePipes.remove(activePipes.last())
 		}
+	}
+
+	method deleteOverPipe() {
+		if (not self.underSelector() && selector.overPipe()) {
+			activePipes.remove(game.colliders(selector).last())
+			game.removeVisual(game.colliders(selector).last())
+		}
+	}
+
+	method underSelector() {
+		return game.colliders(selector).size() == 0
+	}
+	
+	method isActivePipesEmpty(){
+		return activePipes.size() == 0
 	}
 
 }
