@@ -33,10 +33,6 @@ class CrozablePipe inherits Pipe { //se pueden atravezar
 		return false
 	}
 
-	method deleteYourself() {
-		game.removeVisual(self)
-	}
-
 // var property dir
 }
 
@@ -47,16 +43,22 @@ object selector {
 	var property direction = [ "N", "E", "S", "W" ]
 	var property indexDirection = 0
 	var property position = game.center() // necesito definir el property para tener el getter
-	var property image = "pipeTypeI_N.png"
+	var property image = "S_pipeTypeI_N.png"
 
 	method selectorRotacion(pipe, dir) {
-		self.image(pipe + dir + ".png")
+		self.image("S_" + self.selectedPipe())
 	// (object + direction + type)
 	}
 
 	method updateImage() {
-		self.image(self.pipes().get(self.indexPipe()) + self.direction().get(self.indexDirection())+".png")
+		self.image("S_" + self.selectedPipe())
 	}
+
+	method selectedPipe() {
+		return self.pipes().get(self.indexPipe()) + self.direction().get(self.indexDirection()) + self.imageFormat()
+	}
+
+	method imageFormat() = ".png"
 
 	method movimientoUp() {
 		if (not game.getObjectsIn(position.up(1)).any({ element => element.blocked()})) {
@@ -80,10 +82,6 @@ object selector {
 		if (not game.getObjectsIn(position.right(1)).any({ element => element.blocked()})) {
 			position = position.right(1)
 		}
-	}
-
-	method overPipe() {
-		return (not game.colliders(self).any({ element => element.blocked()}))
 	}
 
 }
@@ -171,9 +169,11 @@ object juego {
 	}
 
 	method colocarPipe() {
-		const newPipe = new CrozablePipe(position = selector.position().clone(), image = selector.image())
-		activePipes.add(newPipe)
-		game.addVisual(newPipe)
+		if (self.notUnderSelector()) {
+			const newPipe = new CrozablePipe(position = selector.position().clone(), image = selector.selectedPipe())
+			activePipes.add(newPipe)
+			game.addVisual(newPipe)
+		}
 	}
 
 	method deleteLastPipe() {
@@ -184,13 +184,13 @@ object juego {
 	}
 
 	method deleteOverPipe() {
-		if (not self.underSelector() && selector.overPipe()) {
+		if (not self.notUnderSelector()) {
 			activePipes.remove(game.colliders(selector).last())
 			game.removeVisual(game.colliders(selector).last())
 		}
 	}
 
-	method underSelector() {
+	method notUnderSelector() {
 		return game.colliders(selector).size() == 0
 	}
 
