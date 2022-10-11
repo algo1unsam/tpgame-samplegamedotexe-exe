@@ -24,11 +24,16 @@ class Block {
 class Pipe inherits Block { //no se pueden mover
 
 	var property image
+	var property connections = [ false, false, false, false] //"N"= ↑,
+	//var property connectionsFinish = [ false, false, false, true]//        				  "W"= ←
 
 }
 
 class CrozablePipe inherits Pipe { //se pueden atravezar
-
+	var property connectionsTypeI = [ true, false, true, false] //"N"= ↑,       , "S"= ↓, 
+	var property connectionsTypeL= [ false, true, true, false] //       , "E"= →, "S"= ↓, 
+	var property connectionsTypeT= [ false, true, true, true] //        , "E"= →, "S"= ↓, "W"= ←
+	
 	override method blocked() {
 		return false
 	}
@@ -102,6 +107,11 @@ object selector {
 object juego {
 
 	const activePipes = []
+//	var property connectionsTypeI = [ true, false, true, false] //"N"= ↑,       , "S"= ↓, 
+//	var property connectionsTypeL= [ false, true, true, false] //       , "E"= →, "S"= ↓, 
+//	var property connectionsTypeT= [ false, true, true, true] //        , "E"= →, "S"= ↓, "W"= ←
+//	var property connectionsBegin = [ true, false, false, false] //"N"= ↑,
+//	var property connectionsFinish = [ false, false, false, true]//        				  "W"= ←
 
 	method iniciar() {
 		game.title("Juego Base")
@@ -109,6 +119,13 @@ object juego {
 		game.height(10)
 		game.cellSize(50)
 		game.boardGround("background_beta(01).png")
+	//MUSICA y TIEMPO
+	    const musica = game.sound("songBSO.mp3")
+	    musica.shouldLoop(true)
+	    musica.volume(0.1)
+	    game.schedule(0, {musica.play()}) 
+	    game.addVisual(textoTiempo)
+	//    
 		game.start()
 		self.creaPersonajes()
 		self.setKeys()
@@ -146,8 +163,9 @@ object juego {
 	}
 
 	method createBeginAndEndPipe() {
-		const pipeInicio = new Pipe(position = game.at(5, 3), image = "inicio_N.png")
-		const pipeFin = new Pipe(position = game.at(9, 7), image = "fin_N.png")
+		//	var property connectionsTypeT= [ false, true, true, true] //        , "E"= →, "S"= ↓, "W"= ←
+		const pipeInicio = new Pipe(position = game.at(5, 3), image = "inicio_N.png",connections=[ true, true, false, false])
+		const pipeFin = new Pipe(position = game.at(9, 7), image = "fin_N.png",connections=[ false, false, true, true])
 		game.addVisual(pipeInicio)
 		game.addVisual(pipeFin)
 	}
@@ -166,6 +184,7 @@ object juego {
 		keyboard.backspace().onPressDo{ self.deleteOverPipe()}
 		keyboard.q().onPressDo{ self.switchPipeQ()}
 		keyboard.e().onPressDo{ self.switchPipeE()}
+		
 	}
 
 	method colocarPipe() {
@@ -232,4 +251,22 @@ object juego {
 	}
 
 }
+object textoTiempo {
+    method position() = game.at(12,6)
+    
+
+    method text() = "   Tiempo:" + contador.tiempo() + " Segundos"
+    
+    method textColor() = "2080DFFF"
+}
+object contador {
+	var milisegundos = 0
+	var segundos = 0
+	method tiempo() {
+		milisegundos += 1
+		segundos=milisegundos/100	
+		return segundos.truncate(0)
+		}
+
+	}
 
