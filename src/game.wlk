@@ -14,6 +14,7 @@ class Block {
 
 	var property image
 	const property position
+	method blocked() = true
 
 }
 
@@ -22,56 +23,113 @@ class Pipe inherits Block { //no se pueden mover
 	const property direction = [ "N", "E", "S", "W" ]
 	const property indexDirection
 	const property connectedPipe = [ {game.getObjectsIn(self.position().up(1))}, {game.getObjectsIn(self.position().right(1))}, {game.getObjectsIn(self.position().down(1))}, {game.getObjectsIn(self.position().left(1))} ]
-	const property pipeList = [ "obstacle.png" ]
-	const property validPipes = []
-
-	method blocked() {
-		return true
-	}
 
 	method connected() {
-		return self.connectionDetected() && self.isPipeValid()
-	}
-
-	method isPipeValid() {
-		return self.validPipes().contains(self.connectedPipe().get(indexDirection).apply().last().image())
+		return self.connectionDetected() 
 	}
 
 	method connectionDetected() {
 		return self.connectedPipe().get(self.indexDirection()).apply().size() >= 1
 	}
 
-// var property connectionsFinish = [ false, false, false, true]//        				  "W"= ←
+
 }
 
 class CrozablePipe inherits Pipe { //se pueden atravezar
-//	var property connectionsTypeI = [ true, false, true, false] //"N"= ↑,       , "S"= ↓, 
-//	var property connectionsTypeL= [ false, true, true, false] //       , "E"= →, "S"= ↓, 
-//	var property connectionsTypeT= [ false, true, true, true] //        , "E"= →, "S"= ↓, "W"= ←
 
-	const property pipes = [ "pipeTypeI_", "pipeTypeL_", "pipeTypeT_" ]
-	var property indexPipe
-
-	override method blocked() {
-		return false
+	method connectionDetected(dir) {
+		return self.connectedPipe().get(dir).apply().size() >= 1
 	}
+
+	override method blocked() = false
 
 }
 
 class PipeTypeI inherits CrozablePipe {
+	
+//	const property direction = [ "N", "E", "S", "W" ]
+//	const property indexDirection
+//	const property connectedPipe = [ {game.getObjectsIn(self.position().up(1))}, {game.getObjectsIn(self.position().right(1))}, {game.getObjectsIn(self.position().down(1))}, {game.getObjectsIn(self.position().left(1))} ]
+//	const property validPipes = []
+//
+//	method connected() {
+//		return self.connectionDetected() && self.isPipeValid()
+//	}
+//
+//	method isPipeValid() {
+//		return self.validPipes().contains(self.connectedPipe().get(indexDirection).apply().last().image())
+//	}
+	
+	
+	override method connectionDetected() {
+		if ((self.indexDirection() == 0) || (self.indexDirection() == 2)) {
+			return self.connectionDetected(0) && self.connectionDetected(2)
+		} else {
+			return self.connectionDetected(1) && self.connectionDetected(3)
+		}
+	}
 
 }
 
 class PipeTypeL inherits CrozablePipe {
 
+//	const property direction = [ "N", "E", "S", "W" ]
+//	const property indexDirection
+//	const property connectedPipe = [ {game.getObjectsIn(self.position().up(1))}, {game.getObjectsIn(self.position().right(1))}, {game.getObjectsIn(self.position().down(1))}, {game.getObjectsIn(self.position().left(1))} ]
+//	const property validPipes = []
+//
+//	method connected() {
+//		return self.connectionDetected() && self.isPipeValid()
+//	}
+//
+//	method isPipeValid() {
+//		return self.validPipes().contains(self.connectedPipe().get(indexDirection).apply().last().image())
+//	}
+
+	override method connectionDetected() {
+		if (self.indexDirection() == 0) { // N
+			return self.connectionDetected(1) && self.connectionDetected(2)
+		} else if (self.indexDirection() == 1) { // E
+			return self.connectionDetected(0) && self.connectionDetected(1)
+		} else if (self.indexDirection() == 2) { // S
+			return self.connectionDetected(0) && self.connectionDetected(3)
+		} else { // indexDirection() == 3
+			return self.connectionDetected(2) && self.connectionDetected(3)
+		}
+	}
+
 }
 
 class PipeTypeT inherits CrozablePipe {
 
+//	const property direction = [ "N", "E", "S", "W" ]
+//	const property indexDirection
+//	const property connectedPipe = [ {game.getObjectsIn(self.position().up(1))}, {game.getObjectsIn(self.position().right(1))}, {game.getObjectsIn(self.position().down(1))}, {game.getObjectsIn(self.position().left(1))} ]
+//	const property validPipes = []
+//
+//	method connected() {
+//		return self.connectionDetected() && self.isPipeValid()
+//	}
+//
+//	method isPipeValid() {
+//		return self.validPipes().contains(self.connectedPipe().get(indexDirection).apply().last().image())
+//	}
+
+	override method connectionDetected() {
+		if (self.indexDirection() == 0) { // N
+			return self.connectionDetected(0) && self.connectionDetected(1) && self.connectionDetected(3)
+		} else if (self.indexDirection() == 1) { // E
+			return self.connectionDetected(0) && self.connectionDetected(1) && self.connectionDetected(2)
+		} else if (self.indexDirection() == 2) { // S
+			return self.connectionDetected(1) && self.connectionDetected(2) && self.connectionDetected(3)
+		} else { // indexDirection() == 3 //W
+			return self.connectionDetected(0) && self.connectionDetected(3) && self.connectionDetected(2)
+		}
+	}
+
 }
 
 // var property dir
-
 object selector {
 
 	/*	0			0			0			0
@@ -164,10 +222,10 @@ object selector {
 //
 //}
 object juego {
-
+	
+	const property pipeType = [{self.colocarPipeTypeI()},{self.colocarPipeTypeL()},{self.colocarPipeTypeT()}]
 	const property activePipes = []
 	const property pipesInGame = []
-	const property validPipes = [ ["pipeTypeI_N.png","pipeTypeI_S.png","pipeTypeI_W.png","pipeTypeI_E.png","pipeTypeL_W.png","pipeTypeL_N.png","endPipe_S.png"], ["pipeTypeI_E.png","pipeTypeI_W.png","pipeTypeI_N.png","pipeTypeI_S.png","pipeTypeL_W.png","pipeTypeL_S.png","endPipe_W.png"], ["pipeTypeI_N.png","pipeTypeI_S.png","pipeTypeL_S.png","pipeTypeL_E.png","endPipe_N.png"], ["pipeTypeI_E.png","pipeTypeI_W.png","pipeTypeL_N.png","pipeTypeL_E.png","endPipe_E.png"] ]
 
 	method iniciar() {
 		game.title("Juego Base")
@@ -196,9 +254,10 @@ object juego {
 	}
 
 	method createBeginAndEndPipe() {
-		const pipeInicio = new Pipe(position = game.at(5, 3), image = "initPipe_N.png", indexDirection = 0, validPipes = [ "pipeTypeI_N.png", "pipeTypeI_S.png", "pipeTypeI_E.png" ])
+		const pipeInicio = new Pipe(position = game.at(5, 3), image = "initPipe_N.png", indexDirection = 0)
 		const pipeFin = new Pipe(position = game.at(9, 7), image = "endPipe_S.png", indexDirection = 2)
 		self.pipesInGame().add(pipeInicio)
+		self.pipesInGame().add(pipeFin)
 		game.addVisual(pipeInicio)
 		game.addVisual(pipeFin)
 	}
@@ -221,12 +280,28 @@ object juego {
 
 	method colocarPipe() {
 		if (self.notUnderSelector()) {
-			const newPipe = new CrozablePipe(position = selector.position().clone(), image = selector.selectedPipe(), indexPipe = selector.indexPipe(), indexDirection = selector.indexDirection(), validPipes = self.validPipes().get(selector.indexDirection()))
+			self.pipeType().get(selector.indexPipe()).apply()
+			self.win()
+		}
+	}
+	
+	method colocarPipeTypeI(){
+		const newPipe = new PipeTypeI(position = selector.position().clone(), image = selector.selectedPipe(), indexDirection = selector.indexDirection())
 			self.activePipes().add(newPipe)
 			self.pipesInGame().add(newPipe)
 			game.addVisual(newPipe)
-			self.win()
-		}
+	}
+	method colocarPipeTypeL(){
+		const newPipe = new PipeTypeL(position = selector.position().clone(), image = selector.selectedPipe(), indexDirection = selector.indexDirection())
+			self.activePipes().add(newPipe)
+			self.pipesInGame().add(newPipe)
+			game.addVisual(newPipe)
+	}
+	method colocarPipeTypeT(){
+		const newPipe = new PipeTypeT(position = selector.position().clone(), image = selector.selectedPipe(), indexDirection = selector.indexDirection())
+			self.activePipes().add(newPipe)
+			self.pipesInGame().add(newPipe)
+			game.addVisual(newPipe)
 	}
 
 	method deleteLastPipe() {
@@ -293,7 +368,7 @@ object juego {
 
 	method winCondition() {
 		var winingCondition = true
-		self.pipesInGame().forEach({ pipe => winingCondition = winingCondition && pipe.connected() })
+		self.pipesInGame().forEach({ pipe => winingCondition = winingCondition && pipe.connected()})
 		return winingCondition
 	}
 
