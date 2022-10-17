@@ -38,7 +38,7 @@ class Pipe inherits Block { //no se pueden mover
 	}
 
 	method connectionDetected() {
-		return self.connectedPipe().get(indexDirection).apply().size() == 1
+		return self.connectedPipe().get(self.indexDirection()).apply().size() >= 1
 	}
 
 // var property connectionsFinish = [ false, false, false, true]//        				  "W"= ←
@@ -167,7 +167,7 @@ object juego {
 
 	const property activePipes = []
 	const property pipesInGame = []
-	const property validPipes = [ ["pipeTypeI_N.png","pipeTypeI_S.png","pipeTypeL_W.png","pipeTypeL_N.png","endPipe_S.png"], ["pipeTypeI_E.png","pipeTypeI_W.png","pipeTypeL_W.png","pipeTypeL_S.png","endPipe_W.png"], ["pipeTypeI_N.png","pipeTypeI_S.png","pipeTypeL_S.png","pipeTypeL_E.png","endPipe_N.png"], ["pipeTypeI_E.png","pipeTypeI_W.png","pipeTypeL_N.png","pipeTypeL_E.png","endPipe_E.png"] ]
+	const property validPipes = [ ["pipeTypeI_N.png","pipeTypeI_S.png","pipeTypeI_W.png","pipeTypeI_E.png","pipeTypeL_W.png","pipeTypeL_N.png","endPipe_S.png"], ["pipeTypeI_E.png","pipeTypeI_W.png","pipeTypeI_N.png","pipeTypeI_S.png","pipeTypeL_W.png","pipeTypeL_S.png","endPipe_W.png"], ["pipeTypeI_N.png","pipeTypeI_S.png","pipeTypeL_S.png","pipeTypeL_E.png","endPipe_N.png"], ["pipeTypeI_E.png","pipeTypeI_W.png","pipeTypeL_N.png","pipeTypeL_E.png","endPipe_E.png"] ]
 
 	method iniciar() {
 		game.title("Juego Base")
@@ -205,9 +205,9 @@ object juego {
 
 	method setKeys() {
 		keyboard.w().onPressDo{ self.rotateSelector(0)} // North (N)
-		keyboard.s().onPressDo{ self.rotateSelector(1)} // East (E)
-		keyboard.a().onPressDo{ self.rotateSelector(2)} // South (S)
-		keyboard.d().onPressDo{ self.rotateSelector(3)} // West (W)		
+		keyboard.a().onPressDo{ self.rotateSelector(3)} // East (E)
+		keyboard.s().onPressDo{ self.rotateSelector(2)} // South (S)
+		keyboard.d().onPressDo{ self.rotateSelector(1)} // West (W)		
 		keyboard.up().onPressDo{ selector.movimientoUp()}
 		keyboard.down().onPressDo{ selector.movimientoDown()}
 		keyboard.left().onPressDo{ selector.movimientoLeft()}
