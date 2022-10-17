@@ -249,6 +249,8 @@ object juego {
 		musica.shouldLoop(true)
 		musica.volume(0.01)
 		game.schedule(0, { musica.play()})
+		game.onTick(120000,"marioComments", { mario.comentario()})
+		game.onTick(1000,"IncrementsTime",{contador.tiempo()})
 		game.addVisual(textoTiempo)
 		game.addVisual(textoPipes)
 	}
@@ -392,7 +394,7 @@ object textoTiempo {
 
 	method position() = game.at(12, 6)
 
-	method text() = "   Tiempo:" + contador.tiempo().toString() + " Segundos"
+	method text() = "   Tiempo:" + contador.segundos().toString() + " Segundos"
 
 	method textColor() = "2080DFFF"
 
@@ -410,13 +412,14 @@ object textoPipes {
 
 object mario {
 
-	const property position = game.at(11, 1)
-	const property image = "marioar.png"
+	const property position = game.at(11, 2)
+	const property image = "mariosar.png"
+	const property comentarios = ["Te falta pala pibe","Mucha play, poco wollok","¿Dónde quedó tu C ahora?","Esta dificil ¿No?", "Yo a tu edad ya tenía mi titulo"]
 	
-	method hablar(){
+	method hablar() {
 		game.say(self, "Hola pibe")
 	}
-	
+
 	method felicitar() {
 		game.say(self, "Buena pibe")
 	}
@@ -425,20 +428,18 @@ object mario {
 		game.say(self, "Dale pibe, no tengo todo el dia")
 	}
 
+	method comentario() {
+		game.say(self, self.comentarios().anyOne())
+	}
+
 }
 
 object contador {
 
-	var milisegundos = 0
-	var segundos = 0
+	var property segundos = 0
 
 	method tiempo() {
-		milisegundos += 1
-		segundos = milisegundos / 100
-		if(segundos == 120){
-			mario.quejarse()
-		}
-		return segundos.truncate(0)
+		segundos +=1
 	}
 
 }
