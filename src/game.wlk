@@ -249,7 +249,7 @@ object juego {
 		musica.shouldLoop(true)
 		musica.volume(0.01)
 		game.schedule(0, { musica.play()})
-		game.onTick(120000,"marioComments", { mario.comentario()})
+		game.onTick(12000,"marioComments", { mario.comentario()})
 		game.onTick(1000,"IncrementsTime",{contador.tiempo()})
 		game.addVisual(textoTiempo)
 		game.addVisual(textoPipes)
@@ -396,7 +396,7 @@ object textoTiempo {
 
 	method text() = "   Tiempo:" + contador.segundos().toString() + " Segundos"
 
-	method textColor() = "2080DFFF"
+	method textColor() = "800040"
 
 }
 
@@ -404,24 +404,24 @@ object textoPipes {
 
 	method position() = game.at(2, 6)
 
-	method text() = "Cantidad:\nPipe tipo I: " + juego.quantityPipeI().toString() + "\nPipe tipo L:" + juego.quantityPipeL().toString() + "\nPipe tipo T:" + juego.quantityPipeT().toString()
+	method text() = "\n\n  Pipe tipo I: " + juego.quantityPipeI().toString() + "\n\n\n  Pipe tipo L:" + juego.quantityPipeL().toString() + "\n\n\n  Pipe tipo T:" + juego.quantityPipeT().toString()
 
-	method textColor() = "1EC439"
+	method textColor() = "800040"
 
 }
 
 object mario {
 
-	const property position = game.at(11, 2)
+	const property position = game.at(12, 2)
 	const property image = "mariosar.png"
-	const property comentarios = ["Te falta pala pibe","Mucha play, poco wollok","¿Dónde quedó tu C ahora?","Esta dificil ¿No?", "Yo a tu edad ya tenía mi titulo"]
+	const property comentarios = ["Mucha play, poco wollok","Te falta pala pibe","¿Dónde quedó tu C ahora?","Esta dificil ¿No?", "Yo a tu edad ya tenía mi titulo", "Dale che","Dale que tengo futbol!","Bueno vamo a juga"]
 	
 	method hablar() {
 		game.say(self, "Hola pibe")
 	}
 
 	method felicitar() {
-		game.say(self, "Buena pibe")
+		game.say(self, "Bien pibe lo lograste!")
 	}
 
 	method quejarse() {
