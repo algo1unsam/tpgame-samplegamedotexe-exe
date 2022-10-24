@@ -6,11 +6,13 @@ import Bloques.*
 import Selector.*
 
 object juego {
-	
+
+	const property niveles = [ nivelUno, nivelDos, nivelTres, nivelCuatro, nivelCinco ]
 	const property activePipes = []
 	const property pipesInGame = []
-	var property recentLevel = nivelCuatro
-	
+	var property numeroDelNivelActual = 0
+	var property nivelActual = nivelUno
+
 	method colocarPipe() {
 		if (self.pipeQuantity() > 0) {
 			if (self.notUnderSelector()) {
@@ -20,30 +22,30 @@ object juego {
 			}
 		}
 	}
-	
-	method pipeQuantity(){
+
+	method pipeQuantity() {
 		return selector.recentPipe().quantity()
 	}
-	
-	method increasePipeQuantity(){
+
+	method increasePipeQuantity() {
 		selector.recentPipe().increase()
 	}
-	method decreasePipeQuantity(){
+
+	method decreasePipeQuantity() {
 		selector.recentPipe().decrease()
 	}
-	
-	method addNewPipe(newPipe){
+
+	method addNewPipe(newPipe) {
 		self.activePipes().add(newPipe)
 		self.pipesInGame().add(newPipe)
 		game.addVisual(newPipe)
 	}
-	
 
 	method deleteLastPipe() {
 		if (not self.isActivePipesEmpty()) {
 			//
 			activePipes.last().increaseSelectorPipe()
-			//
+				//
 			game.removeVisual(activePipes.last())
 			activePipes.remove(activePipes.last())
 		}
@@ -58,6 +60,14 @@ object juego {
 		}
 	}
 
+	method deleteAllPipes() {
+		if (not self.isActivePipesEmpty()) {
+			activePipes.forEach({ pipe => game.removeVisual(pipe)})
+			activePipes.clear()
+			pipesInGame.clear()
+		}
+	}
+
 	method notUnderSelector() {
 		return game.colliders(selector).size() == 0
 	}
@@ -66,10 +76,16 @@ object juego {
 		return activePipes.size() == 0
 	}
 
-
 	method win() {
 		if (self.winCondition()) {
-			mario.felicitar()
+			if (numeroDelNivelActual != 5) {
+				self.nuevoNivel()
+				mario.felicitar()
+				imagenNivel.aparecer()
+			}
+			else{
+				imagenFin.aparecer() //acá hay que poner la imagen final
+			}
 		}
 	}
 
@@ -78,5 +94,13 @@ object juego {
 		self.pipesInGame().forEach({ pipe => winingCondition = winingCondition && pipe.connected()})
 		return winingCondition
 	}
-	
+
+	method nuevoNivel() {
+		nivelActual.terminar()
+		numeroDelNivelActual += 1
+		nivelActual = niveles.get(numeroDelNivelActual)
+		nivelActual.iniciar()
+	}
+
 }
+

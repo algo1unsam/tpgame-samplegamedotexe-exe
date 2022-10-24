@@ -25,12 +25,22 @@ object textoPipes {
 
 }
 
+object textoNivel {
+
+	method position() = game.at(2, 8)
+
+	method text() = (juego.numeroDelNivelActual() + 1).toString()
+
+	method textColor() = "800040"
+
+}
+
 object mario {
 
-	const property position = game.at(12, 2)
 	const property image = "mariosar.png"
-	const property comentarios = ["Mucha play, poco wollok","Te falta pala pibe","¿Dónde quedó tu C ahora?","Esta dificil ¿No?", "Yo a tu edad ya tenía mi titulo", "Dale che","Bueno vamo' a juga'"]
-	
+	const property position = game.at(12, 2)
+	const property comentarios = [ "Mucha play, poco wollok", "Te falta pala pibe", "¿Dónde quedó tu C ahora?", "Esta dificil ¿No?", "Yo a tu edad ya tenía mi titulo", "Dale che", "Bueno vamo' a juga'" ]
+
 	method hablar() {
 		game.say(self, "Hola pibe")
 	}
@@ -49,12 +59,41 @@ object mario {
 
 }
 
+object imagenNivel {
+
+	const property image = "VICTORIA_mario.png"
+	const property position = game.at(0,0)
+
+	method aparecer() {
+		game.addVisual(self)
+	}
+
+	method desaparecer() {
+		if (game.hasVisual(self)) {
+			game.removeVisual(self)
+		}
+	}
+
+}
+
+object imagenFin {
+
+	const property image = "VICTORIA_mario.png" ///acá pone cual es la imagen
+	const property position = game.at(0,0)
+
+	method aparecer() {
+		game.addVisual(self)
+	}
+
+}
+
 object contador {
 
 	var property segundos = 0
 
 	method tiempo() {
-		segundos +=1
+		segundos += 1
 	}
 
 }
+

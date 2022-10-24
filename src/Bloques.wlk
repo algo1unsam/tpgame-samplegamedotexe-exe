@@ -11,7 +11,7 @@ class Block {
 	method blocked() = true
 
 	method image() {
-		return "default.png"
+		return "Obstacle.png"
 	}
 
 }
@@ -25,7 +25,7 @@ class Pipe inherits Block {
 	}
 
 	method connectionDetected() {
-		return dir.bloquePorDelante(position)
+		return dir.hayBloquePorDelante(position)
 	}
 
 }
@@ -71,9 +71,9 @@ class PipeTypeI inherits CrozablePipe {
 	// [n,e,s,w]
 	override method connectionDetected() {
 		if (dir.equals(north) || dir.equals(south)) {
-			return north.bloquePorDelante(position) && south.bloquePorDelante(position)
+			return north.hayBloquePorDelante(position) && south.hayBloquePorDelante(position)
 		} else {
-			return east.bloquePorDelante(position) && west.bloquePorDelante(position)
+			return east.hayBloquePorDelante(position) && west.hayBloquePorDelante(position)
 		}
 	}
 
@@ -92,13 +92,13 @@ class PipeTypeL inherits CrozablePipe {
 	// [n,e,s,w]
 	override method connectionDetected() {
 		if (dir.equals(north)) { // N
-			return east.bloquePorDelante(position) && south.bloquePorDelante(position)
+			return east.hayBloquePorDelante(position) && south.hayBloquePorDelante(position)
 		} else if (dir.equals(east)) { // E
-			return north.bloquePorDelante(position) && east.bloquePorDelante(position)
+			return north.hayBloquePorDelante(position) && east.hayBloquePorDelante(position)
 		} else if (dir.equals(south)) { // S
-			return north.bloquePorDelante(position) && west.bloquePorDelante(position)
+			return north.hayBloquePorDelante(position) && west.hayBloquePorDelante(position)
 		} else { // W
-			return west.bloquePorDelante(position) && south.bloquePorDelante(position)
+			return west.hayBloquePorDelante(position) && south.hayBloquePorDelante(position)
 		}
 	}
 
@@ -116,13 +116,13 @@ class PipeTypeT inherits CrozablePipe {
 
 	override method connectionDetected() {
 		if (dir.equals(north)) { // N
-			return east.bloquePorDelante(position) && west.bloquePorDelante(position) && north.bloquePorDelante(position)
+			return east.hayBloquePorDelante(position) && west.hayBloquePorDelante(position) && north.hayBloquePorDelante(position)
 		} else if (dir.equals(east)) { // E
-			return east.bloquePorDelante(position) && south.bloquePorDelante(position) && north.bloquePorDelante(position)
+			return east.hayBloquePorDelante(position) && south.hayBloquePorDelante(position) && north.hayBloquePorDelante(position)
 		} else if (dir.equals(south)) { // S
-			return east.bloquePorDelante(position) && west.bloquePorDelante(position) && south.bloquePorDelante(position)
+			return east.hayBloquePorDelante(position) && west.hayBloquePorDelante(position) && south.hayBloquePorDelante(position)
 		} else { // W
-			return south.bloquePorDelante(position) && west.bloquePorDelante(position) && north.bloquePorDelante(position)
+			return south.hayBloquePorDelante(position) && west.hayBloquePorDelante(position) && north.hayBloquePorDelante(position)
 		}
 	}
 

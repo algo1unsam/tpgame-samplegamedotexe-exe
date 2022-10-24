@@ -11,10 +11,11 @@ program juego{
 	game.width(15)
 	game.height(10)
 	game.cellSize(50)
-	game.boardGround("background_beta(01).png")
+	game.boardGround("background.png")
 // --------------------------------------------CREO PERSONAJE
 	game.addVisual(textoTiempo)
-	game.addVisual(textoPipes) 
+	game.addVisual(textoPipes)
+	game.addVisual(textoNivel)
 	game.addVisual(mario)
 	game.addVisual(selector)
 	game.onTick(12000, "marioComments", { mario.comentario() })
@@ -41,9 +42,10 @@ program juego{
 	keyboard.num1().onPressDo{ selector.switchPipe(selectorPipeTypeI) }
 	keyboard.num2().onPressDo{ selector.switchPipe(selectorPipeTypeL) }
 	keyboard.num3().onPressDo{ selector.switchPipe(selectorPipeTypeT) }
-	
-	juego.recentLevel().iniciar()
+	keyboard.enter().onPressDo{ imagenNivel.desaparecer()}
 
+//---------------------------------------------ASIGNO PRIMER NIVEL
+	nivelUno.iniciar()
 	game.start()
 }
 

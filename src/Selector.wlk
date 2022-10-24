@@ -83,36 +83,41 @@ object selector {
 	}
 
 	method movimientoUp() {
-		if (self.collideUp()) {
+		if (self.puedoMoverme(north)) {
 			position = position.up(1)
 		}
 	}
 
-	method collideUp() = not (self.position().up(1).y() == 8) && not game.getObjectsIn(self.position().up(1)).any({ element => element.blocked()})
-
-	method movimientoDown() {
-		if (self.collideDown()) {
-			position = position.down(1)
-		}
-	}
-
-	method collideDown() = not (self.position().down(1).y() == 2) && not game.getObjectsIn(self.position().down(1)).any({ element => element.blocked()})
-
 	method movimientoLeft() {
-		if (self.collideLeft()) {
+		if (self.puedoMoverme(west)) {
 			position = position.left(1)
 		}
 	}
 
-	method collideLeft() = not (self.position().left(1).x() == 4) && not game.getObjectsIn(self.position().left(1)).any({ element => element.blocked()})
-
 	method movimientoRight() {
-		if (self.collideRight()) {
+		if (self.puedoMoverme(east)) {
 			position = position.right(1)
 		}
 	}
 
-	method collideRight() = not (self.position().right(1).x() == 10) && not game.getObjectsIn(self.position().right(1)).any({ element => element.blocked()})
+	method movimientoDown() {
+		if (self.puedoMoverme(south)) {
+			position = position.down(1)
+		}
+	}
+
+	method puedoMoverme(dirr) = not self.chocaConRecuadro(dirr) && not (self.hayAlgunoBloqueado(dirr))							
+	
+	method chocaConRecuadro(dirr) {
+		return dirr.limite()
+	}
+
+	method hayAlgunoBloqueado(dirr) {
+		return dirr.bloquesPorDelante(position).any({ element => element.blocked() })
+	}
+	
+	// bloque -> bloqueado -> true
+	// norte -> hay un bloque -> esta bloquado -> true
 
 	method switchPipe(type) {
 		self.recentPipe(type)
