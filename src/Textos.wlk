@@ -2,6 +2,8 @@ import wollok.game.*
 import Bloques.*
 import Juego.*
 import Niveles.*
+import dir.*
+import Selector.*
 
 object textoTiempo {
 
@@ -17,7 +19,7 @@ object textoPipes {
 
 	method position() = game.at(2, 6)
 
-	method text() = "\n\n  Pipe tipo I: " + juego.quantityPipeI().toString() + "\n\n\n  Pipe tipo L:" + juego.quantityPipeL().toString() + "\n\n\n  Pipe tipo T:" + juego.quantityPipeT().toString()
+	method text() = "\n\n  Pipe tipo I: " + selectorPipeTypeI.quantity().toString() + "\n\n\n  Pipe tipo L:" + selectorPipeTypeL.quantity().toString() + "\n\n\n  Pipe tipo T:" + selectorPipeTypeT.quantity().toString()
 
 	method textColor() = "800040"
 

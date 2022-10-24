@@ -1,48 +1,50 @@
 import wollok.game.*
 import Bloques.*
 import Juego.*
+import Selector.*
 import Textos.*
 import Niveles.*
+import dir.*
 
 program juego{
+	game.title("Juego Base")
+	game.width(15)
+	game.height(10)
+	game.cellSize(50)
+	game.boardGround("background_beta(01).png")
+// --------------------------------------------CREO PERSONAJE
+	game.addVisual(textoTiempo)
+	game.addVisual(textoPipes) 
+	game.addVisual(mario)
+	game.addVisual(selector)
+	game.onTick(12000, "marioComments", { mario.comentario() })
+	mario.hablar()
+// --------------------------------------------MUSICA Y TIEMPO
+	const musica = game.sound("songBSO.mp3")
+	musica.shouldLoop(true)
+	musica.volume(0.02)
+	game.schedule(0, { musica.play() })
+	game.onTick(1000, "IncrementsTime", { contador.tiempo() })
 
-		game.title("Juego Base")
-		game.width(15)
-		game.height(10)
-		game.cellSize(50)
-		game.boardGround("background_beta(01).png")
-
-		//--------------------------------------------MUSICA Y TIEMPO
-		const musica = game.sound("songBSO.mp3")
-		musica.shouldLoop(true)
-		musica.volume(0.02)
-		game.schedule(0, { musica.play()})
-		game.onTick(12000,"marioComments", { mario.comentario()})
-		game.onTick(1000,"IncrementsTime",{contador.tiempo()})
-		game.addVisual(textoTiempo)
-		game.addVisual(textoPipes)
-		//--------------------------------------------CREO PIPES INICIO Y FIN
-		nivel.uno()
-		//--------------------------------------------CREO PERSONAJE
-		game.addVisual(selector)
-		game.addVisual(mario)
-		mario.hablar()
-		//--------------------------------------------ASIGNO CONTROLES
-		keyboard.w().onPressDo{ juego.rotateSelector(0)} // North (N)
-		keyboard.a().onPressDo{ juego.rotateSelector(3)} // East (E)
-		keyboard.s().onPressDo{ juego.rotateSelector(2)} // South (S)
-		keyboard.d().onPressDo{ juego.rotateSelector(1)} // West (W)		
-		keyboard.up().onPressDo{ selector.movimientoUp()}
-		keyboard.down().onPressDo{ selector.movimientoDown()}
-		keyboard.left().onPressDo{ selector.movimientoLeft()}
-		keyboard.right().onPressDo{ selector.movimientoRight()}
-		keyboard.space().onPressDo{ juego.colocarPipe()}
-		keyboard.z().onPressDo{ juego.deleteLastPipe()}
-		keyboard.backspace().onPressDo{ juego.deleteOverPipe()}
-		keyboard.q().onPressDo{ juego.switchPipeQ()}
-		keyboard.e().onPressDo{ juego.switchPipeE()}
+// --------------------------------------------ASIGNO CONTROLES
+	keyboard.w().onPressDo{ selector.rotateSelector(north) } // North (N)
+	keyboard.a().onPressDo{ selector.rotateSelector(east) } // East (E)
+	keyboard.s().onPressDo{ selector.rotateSelector(south) } // South (S)
+	keyboard.d().onPressDo{ selector.rotateSelector(west) } // West (W)		
+	keyboard.up().onPressDo{ selector.movimientoUp() }
+	keyboard.down().onPressDo{ selector.movimientoDown() }
+	keyboard.left().onPressDo{ selector.movimientoLeft() }
+	keyboard.right().onPressDo{ selector.movimientoRight() }
+	keyboard.space().onPressDo{ juego.colocarPipe() }
+	keyboard.z().onPressDo{ juego.deleteLastPipe() }
+	keyboard.backspace().onPressDo{ juego.deleteOverPipe() }
+	keyboard.num1().onPressDo{ selector.switchPipe(selectorPipeTypeI) }
+	keyboard.num2().onPressDo{ selector.switchPipe(selectorPipeTypeL) }
+	keyboard.num3().onPressDo{ selector.switchPipe(selectorPipeTypeT) }
 	
-		game.start()
+	juego.recentLevel().iniciar()
+
+	game.start()
 }
 
 
