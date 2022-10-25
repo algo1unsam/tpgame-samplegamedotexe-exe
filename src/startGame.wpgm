@@ -26,7 +26,6 @@ program juego{
 	musica.volume(0.02)
 	game.schedule(0, { musica.play() })
 	game.onTick(1000, "IncrementsTime", { contador.tiempo() })
-
 // --------------------------------------------ASIGNO CONTROLES
 	keyboard.w().onPressDo{ selector.rotateSelector(north) } // North (N)
 	keyboard.a().onPressDo{ selector.rotateSelector(east) } // East (E)
@@ -42,12 +41,9 @@ program juego{
 	keyboard.num1().onPressDo{ selector.switchPipe(selectorPipeTypeI) }
 	keyboard.num2().onPressDo{ selector.switchPipe(selectorPipeTypeL) }
 	keyboard.num3().onPressDo{ selector.switchPipe(selectorPipeTypeT) }
-	keyboard.enter().onPressDo{ imagenNivel.desaparecer()}
+	keyboard.enter().onPressDo{ imagenNivel.desaparecer() }
 	keyboard.p().onPressDo({ game.stop() })
-
 //---------------------------------------------ASIGNO PRIMER NIVEL
 	nivelUno.iniciar()
 	game.start()
 }
-
-

@@ -62,7 +62,7 @@ object mario {
 object imagenNivel {
 
 	const property image = "VICTORIA_mario.png"
-	const property position = game.at(0,0)
+	const property position = game.at(0, 0)
 
 	method aparecer() {
 		game.addVisual(self)
@@ -78,8 +78,8 @@ object imagenNivel {
 
 object imagenFin {
 
-	const property image = "FINAL_mario.png" ///acá pone cual es la imagen
-	const property position = game.at(0,0)
+	const property image = "FINAL_mario.png" // /acá pone cual es la imagen
+	const property position = game.at(0, 0)
 
 	method aparecer() {
 		game.addVisual(self)

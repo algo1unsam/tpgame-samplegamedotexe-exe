@@ -9,7 +9,9 @@ class Block {
 	const property position
 
 	method blocked() = true
-
+	
+	method connectable() = false
+	
 	method image() {
 		return "Obstacle.png"
 	}
@@ -19,13 +21,15 @@ class Block {
 class Pipe inherits Block {
 
 	const property dir
-
+	
+	override method connectable() = true
+	
 	method connected() {
 		return self.connectionDetected()
 	}
 
 	method connectionDetected() {
-		return dir.hayBloquePorDelante(position)
+		return dir.hayConexion(position)
 	}
 
 }
@@ -63,7 +67,7 @@ class EndPipe inherits Pipe {
 class CrozablePipe inherits Pipe { //se pueden atravezar
 
 	override method blocked() = false
-	
+
 }
 
 class PipeTypeI inherits CrozablePipe {
@@ -71,17 +75,17 @@ class PipeTypeI inherits CrozablePipe {
 	// [n,e,s,w]
 	override method connectionDetected() {
 		if (dir.equals(north) || dir.equals(south)) {
-			return north.hayBloquePorDelante(position) && south.hayBloquePorDelante(position)
+			return north.hayConexion(position) && south.hayConexion(position)
 		} else {
-			return east.hayBloquePorDelante(position) && west.hayBloquePorDelante(position)
+			return east.hayConexion(position) && west.hayConexion(position)
 		}
 	}
 
 	method increaseSelectorPipe() {
 		selectorPipeTypeI.increase()
 	}
-	
-	override method image(){
+
+	override method image() {
 		return 'pipeTypeI_' + dir.name() + '.png'
 	}
 
@@ -92,21 +96,21 @@ class PipeTypeL inherits CrozablePipe {
 	// [n,e,s,w]
 	override method connectionDetected() {
 		if (dir.equals(north)) { // N
-			return east.hayBloquePorDelante(position) && south.hayBloquePorDelante(position)
+			return east.hayConexion(position) && south.hayConexion(position)
 		} else if (dir.equals(east)) { // E
-			return north.hayBloquePorDelante(position) && east.hayBloquePorDelante(position)
+			return north.hayConexion(position) && east.hayConexion(position)
 		} else if (dir.equals(south)) { // S
-			return north.hayBloquePorDelante(position) && west.hayBloquePorDelante(position)
+			return north.hayConexion(position) && west.hayConexion(position)
 		} else { // W
-			return west.hayBloquePorDelante(position) && south.hayBloquePorDelante(position)
+			return west.hayConexion(position) && south.hayConexion(position)
 		}
 	}
 
 	method increaseSelectorPipe() {
 		selectorPipeTypeL.increase()
 	}
-	
-	override method image(){
+
+	override method image() {
 		return 'pipeTypeL_' + dir.name() + '.png'
 	}
 
@@ -116,25 +120,23 @@ class PipeTypeT inherits CrozablePipe {
 
 	override method connectionDetected() {
 		if (dir.equals(north)) { // N
-			return east.hayBloquePorDelante(position) && west.hayBloquePorDelante(position) && north.hayBloquePorDelante(position)
+			return east.hayConexion(position) && west.hayConexion(position) && north.hayConexion(position)
 		} else if (dir.equals(east)) { // E
-			return east.hayBloquePorDelante(position) && south.hayBloquePorDelante(position) && north.hayBloquePorDelante(position)
+			return east.hayConexion(position) && south.hayConexion(position) && north.hayConexion(position)
 		} else if (dir.equals(south)) { // S
-			return east.hayBloquePorDelante(position) && west.hayBloquePorDelante(position) && south.hayBloquePorDelante(position)
+			return east.hayConexion(position) && west.hayConexion(position) && south.hayConexion(position)
 		} else { // W
-			return south.hayBloquePorDelante(position) && west.hayBloquePorDelante(position) && north.hayBloquePorDelante(position)
+			return south.hayConexion(position) && west.hayConexion(position) && north.hayConexion(position)
 		}
 	}
 
 	method increaseSelectorPipe() {
 		selectorPipeTypeT.increase()
 	}
-	
-	override method image(){
+
+	override method image() {
 		return 'pipeTypeT_' + dir.name() + '.png'
 	}
 
 }
-
-
 

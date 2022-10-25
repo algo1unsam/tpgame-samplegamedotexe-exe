@@ -82,9 +82,8 @@ object juego {
 				self.nuevoNivel()
 				mario.felicitar()
 				imagenNivel.aparecer()
-			}
-			else{
-				imagenFin.aparecer() 
+			} else {
+				imagenFin.aparecer()
 			}
 		}
 	}

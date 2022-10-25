@@ -74,6 +74,8 @@ object selector {
 	var property image = "S_pipeTypeI_N.png"
 	var property pipeValidator = 10
 
+	method connectable() = false
+
 	method updateImage() {
 		self.image("S_" + self.selectedPipe())
 	}
@@ -106,8 +108,8 @@ object selector {
 		}
 	}
 
-	method puedoMoverme(dirr) = not self.chocaConRecuadro(dirr) && not (self.hayAlgunoBloqueado(dirr))							
-	
+	method puedoMoverme(dirr) = not self.chocaConRecuadro(dirr) && not (self.hayAlgunoBloqueado(dirr))
+
 	method chocaConRecuadro(dirr) {
 		return dirr.limite()
 	}
@@ -115,10 +117,9 @@ object selector {
 	method hayAlgunoBloqueado(dirr) {
 		return dirr.bloquesPorDelante(position).any({ element => element.blocked() })
 	}
-	
+
 	// bloque -> bloqueado -> true
 	// norte -> hay un bloque -> esta bloquado -> true
-
 	method switchPipe(type) {
 		self.recentPipe(type)
 		self.updateImage()
