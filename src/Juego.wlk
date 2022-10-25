@@ -47,7 +47,8 @@ object juego {
 			activePipes.last().increaseSelectorPipe()
 				//
 			game.removeVisual(activePipes.last())
-			activePipes.remove(activePipes.last())
+			self.pipesInGame().remove(activePipes.last())
+			self.activePipes().remove(activePipes.last())
 		}
 	}
 

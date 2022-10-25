@@ -30,7 +30,7 @@ object nivelUno {
 		selectorPipeTypeT.quantity(0)
 		juego.pipesInGame().add(pipeInicio)
 		juego.pipesInGame().add(pipeFin)
-		pipesDelNivel.forEach({ blocks => game.addVisual(blocks)})
+		pipesDelNivel.forEach({ pipes => game.addVisual(pipes)})
 		obstaculosDelNivel.forEach({ blocks => game.addVisual(blocks)})
 	}
 
