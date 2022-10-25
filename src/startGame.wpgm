@@ -23,7 +23,7 @@ program juego{
 // --------------------------------------------MUSICA Y TIEMPO
 	const musica = game.sound("songBSO.mp3")
 	musica.shouldLoop(true)
-	musica.volume(0.02)
+	musica.volume(0.1)
 	game.schedule(0, { musica.play() })
 	game.onTick(1000, "IncrementsTime", { contador.tiempo() })
 // --------------------------------------------ASIGNO CONTROLES
