@@ -43,6 +43,7 @@ program juego{
 	keyboard.num2().onPressDo{ selector.switchPipe(selectorPipeTypeL) }
 	keyboard.num3().onPressDo{ selector.switchPipe(selectorPipeTypeT) }
 	keyboard.enter().onPressDo{ imagenNivel.desaparecer()}
+	keyboard.p().onPressDo({ game.stop() })
 
 //---------------------------------------------ASIGNO PRIMER NIVEL
 	nivelUno.iniciar()

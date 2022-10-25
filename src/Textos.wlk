@@ -78,7 +78,7 @@ object imagenNivel {
 
 object imagenFin {
 
-	const property image = "VICTORIA_mario.png" ///acá pone cual es la imagen
+	const property image = "FINAL_mario.png" ///acá pone cual es la imagen
 	const property position = game.at(0,0)
 
 	method aparecer() {

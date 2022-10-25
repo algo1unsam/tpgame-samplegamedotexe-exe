@@ -78,13 +78,13 @@ object juego {
 
 	method win() {
 		if (self.winCondition()) {
-			if (numeroDelNivelActual != 5) {
+			if (numeroDelNivelActual != 4) {
 				self.nuevoNivel()
 				mario.felicitar()
 				imagenNivel.aparecer()
 			}
 			else{
-				imagenFin.aparecer() //acá hay que poner la imagen final
+				imagenFin.aparecer() 
 			}
 		}
 	}
