@@ -29,6 +29,5 @@ Es un juego muy intuitivo y progresivo, el cual contiene varios niveles una vez 
  ## Otros 
 
  - Materia: Algoritmos 1
- -Universidad: Universidad Nacional de San Martin 
+ - Universidad: Universidad Nacional de San Martin 
  - Versión de wollok : 18.0.1
- -
