@@ -1,0 +1,49 @@
+import wollok.game.*
+import Bloques.*
+import Juego.*
+import Selector.*
+import Textos.*
+import Niveles.*
+import dir.*
+
+program juego{
+	game.title("Juego Base")
+	game.width(15)
+	game.height(10)
+	game.cellSize(50)
+	game.boardGround("background.png")
+// --------------------------------------------CREO PERSONAJE
+	game.addVisual(textoTiempo)
+	game.addVisual(textoPipes)
+	game.addVisual(textoNivel)
+	game.addVisual(mario)
+	game.addVisual(selector)
+	game.onTick(12000, "marioComments", { mario.comentario() })
+	mario.hablar()
+// --------------------------------------------MUSICA Y TIEMPO
+	const musica = game.sound("songBSO.mp3")
+	musica.shouldLoop(true)
+	musica.volume(0.1)
+	game.schedule(0, { musica.play() })
+	game.onTick(1000, "IncrementsTime", { contador.tiempo() })
+// --------------------------------------------ASIGNO CONTROLES
+	keyboard.w().onPressDo{ selector.rotateSelector(north) } // North (N)
+	keyboard.a().onPressDo{ selector.rotateSelector(east) } // East (E)
+	keyboard.s().onPressDo{ selector.rotateSelector(south) } // South (S)
+	keyboard.d().onPressDo{ selector.rotateSelector(west) } // West (W)		
+	keyboard.up().onPressDo{ selector.movimientoUp() }
+	keyboard.down().onPressDo{ selector.movimientoDown() }
+	keyboard.left().onPressDo{ selector.movimientoLeft() }
+	keyboard.right().onPressDo{ selector.movimientoRight() }
+	keyboard.space().onPressDo{ juego.colocarPipe() }
+	keyboard.z().onPressDo{ juego.deleteLastPipe() }
+	keyboard.backspace().onPressDo{ juego.deleteOverPipe() }
+	keyboard.num1().onPressDo{ selector.switchPipe(selectorPipeTypeI) }
+	keyboard.num2().onPressDo{ selector.switchPipe(selectorPipeTypeL) }
+	keyboard.num3().onPressDo{ selector.switchPipe(selectorPipeTypeT) }
+	keyboard.enter().onPressDo{ imagenNivel.desaparecer() }
+	keyboard.p().onPressDo({ game.stop() })
+//---------------------------------------------ASIGNO PRIMER NIVEL
+	nivelUno.iniciar()
+	game.start()
+}
